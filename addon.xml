@@ -22,7 +22,7 @@
           so the user can see “Run” in Program Add-ons and manually open your wizard.
           <provides>program</provides> ensures it appears in the “Programs” category.
     -->
-    <extension point="xbmc.python.plugin" library="default.py">
+    <extension point="xbmc.python.script" library="default.py">
         <provides>program</provides>
     </extension>
 
