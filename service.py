@@ -2,6 +2,7 @@
 
 import xbmcaddon
 import xbmc
+
 from resources.lib.maintenance import auto_maintenance_if_enabled
 
 ADDON = xbmcaddon.Addon(id='plugin.program.nativowizard')
