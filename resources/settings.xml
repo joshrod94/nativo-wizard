@@ -1,0 +1,5 @@
+<settings>
+    <category label="Wizard Settings">
+        <setting id="auto_maintenance" type="bool" label="Enable Auto Maintenance" default="false" />
+    </category>
+</settings>

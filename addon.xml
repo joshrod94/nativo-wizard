@@ -24,6 +24,7 @@
       so Kodi knows your icon, fanart, summary, etc. 
     -->
     <extension point="xbmc.addon.metadata">
+        <settings>resources/settings.xml</settings>
         <summary>Nativo Wizard</summary>
         <description>This wizard helps install and manage the Nativo build.</description>
         <disclaimer>Use at your own risk. This addon and build has only been tested on Kodi 21.2 "Omega".</disclaimer>
