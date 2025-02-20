@@ -6,7 +6,7 @@ import sys
 # If you have backup/restore and maintenance modules, import them:
 # (Adjust import paths if needed.)
 from resources.lib.backup_restore import backup, restore
-from resources.lib.maintenance import clear_cache, remove_thumbs, enable_auto_maintenance, disable_auto_maintenance
+from resources.lib.maintenance import clear_cache, enable_auto_maintenance, disable_auto_maintenance # add remove_thumbs after clear_cache once implemented
 
 # Reference to your add-on, matching the 'id' in addon.xml
 ADDON = xbmcaddon.Addon(id='plugin.program.nativowizard')
