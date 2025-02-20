@@ -1,97 +1,81 @@
 # default.py
-import sys
 import xbmcaddon
 import xbmcgui
-import xbmcplugin
-import xbmc
+import sys
 
-# If you have backup/restore and maintenance modules, import them here:
+# If you have backup/restore and maintenance modules, import them:
+# (Adjust import paths if needed.)
 from resources.lib.backup_restore import backup, restore
-from resources.lib.maintenance import (
-    open_maintenance_menu,
-    handle_maintenance_action
-)
+from resources.lib.maintenance import clear_cache, remove_thumbs, enable_auto_maintenance, disable_auto_maintenance
 
-# Reference to your add-on's ID (must match the <addon id="..."> in addon.xml)
+# Reference to your add-on, matching the 'id' in addon.xml
 ADDON = xbmcaddon.Addon(id='plugin.program.nativowizard')
 
-def parse_parameters():
+def show_main_menu():
     """
-    Extracts query parameters from sys.argv[2], e.g. plugin://.../?action=backup
-    Returns a dict: {'action': 'backup'} 
-    or an empty dict if no parameters are provided.
+    Displays a simple "main menu" using dialog options.
+    Script add-ons do not have plugin handles, so we rely on dialogs or WindowXML.
     """
-    import urllib.parse
-    if len(sys.argv) > 2 and sys.argv[2].startswith('?'):
-        query_str = sys.argv[2][1:]  # Remove the '?' at the start
-        return dict(urllib.parse.parse_qsl(query_str))
-    return {}
-
-def main_menu():
-    """
-    Builds the main wizard menu. 
-    If Kodi called us in plugin mode, sys.argv[1] is the 'handle' needed for addDirectoryItem().
-    """
-    if len(sys.argv) < 2:
-        # No handle => not in plugin mode (or there's an error).
-        xbmc.log("No plugin handle found, cannot build menu.", level=xbmc.LOGWARNING)
+    options = [
+        "Install Build",
+        "Backup Kodi",
+        "Restore Kodi",
+        "Maintenance",
+        "Exit"
+    ]
+    dialog = xbmcgui.Dialog()
+    choice = dialog.select("Nativo Wizard - Main Menu", options)
+    
+    if choice == 0:
+        install_build()
+    elif choice == 1:
+        backup()
+    elif choice == 2:
+        restore()
+    elif choice == 3:
+        show_maintenance_menu()
+    elif choice == 4 or choice == -1:  # -1 if user presses ESC/back
+        # Exit the script
         return
-
-    # Add items to the Kodi directory
-    add_menu_item("Install Build", "install_build")
-    add_menu_item("Backup Kodi", "backup")
-    add_menu_item("Restore Kodi", "restore")
-    add_menu_item("Maintenance", "maintenance")
-
-    # Tell Kodi we're done adding items to this directory
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-def add_menu_item(label, action):
-    """
-    Helper to add a clickable item to Kodi's UI, each linking to ?action=<whatever>.
-    """
-    if len(sys.argv) > 1:
-        handle = int(sys.argv[1])
-        base_url = sys.argv[0]
-        url = f"{base_url}?action={action}"
-        list_item = xbmcgui.ListItem(label=label)
-        xbmcplugin.addDirectoryItem(handle, url, list_item, isFolder=False)
-    else:
-        xbmc.log("Cannot add menu item; no valid plugin handle in sys.argv[1].", level=xbmc.LOGWARNING)
 
 def install_build():
     """
-    Placeholder for your build-installation logic:
-      - Download a ZIP from your server
-      - Extract it to Kodi's userdata/addons folders
-      - Prompt user to restart Kodi
+    Placeholder for your build-installation logic.
+    Could involve downloading a ZIP, extracting, and restarting Kodi.
     """
-    xbmcgui.Dialog().ok("Install Build", "Placeholder: implement download & extraction logic here.")
+    xbmcgui.Dialog().ok("Install Build", "Implement your download & extract logic here.")
+    # Example: If user must restart Kodi after install, you might prompt:
+    # if xbmcgui.Dialog().yesno("Restart Now?", "Do you want to quit Kodi to finalize changes?"):
+    #     xbmc.executebuiltin("Quit")
 
-def run_action(params):
+def show_maintenance_menu():
     """
-    Looks at the 'action' param. If it matches known actions, calls the relevant function.
-    If no action, shows the main menu.
+    Displays maintenance options (auto-maintenance, clearing cache, removing thumbnails, etc.).
     """
-    action = params.get('action', '')
-    if action == 'install_build':
-        install_build()
-    elif action == 'backup':
-        backup()  # Calls the backup function from backup_restore.py
-    elif action == 'restore':
-        restore() # Calls the restore function from backup_restore.py
-    elif action == 'maintenance':
-        open_maintenance_menu()  # A function in maintenance.py
-    elif action in ['enable_auto','disable_auto','clear_cache','remove_thumbs']:
-        # Sub-actions inside your maintenance module
-        handle_maintenance_action(action)
-    else:
-        # No recognized action => show the main wizard menu
-        main_menu()
+    options = [
+        "Clear Cache",
+        "Remove Thumbnails",
+        "Enable Auto Maintenance",
+        "Disable Auto Maintenance",
+        "Back"
+    ]
+    dialog = xbmcgui.Dialog()
+    choice = dialog.select("Maintenance Options", options)
+    
+    if choice == 0:
+        clear_cache()
+    elif choice == 1:
+        remove_thumbs()
+    elif choice == 2:
+        enable_auto_maintenance()
+    elif choice == 3:
+        disable_auto_maintenance()
+    elif choice == 4 or choice == -1:
+        return
+    
+    # After performing an action, show the menu again so the user can do more tasks
+    show_maintenance_menu()
 
 if __name__ == "__main__":
-    # 1. Parse query params, e.g., ?action=backup => {'action': 'backup'}
-    params = parse_parameters()
-
-    # 2. Run the appropriate function or show the main menu if no action is specified
-    run_action(params)
+    # Show the main wizard menu as soon as the script runs
+    show_main_menu()
