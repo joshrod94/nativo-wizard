@@ -32,12 +32,41 @@ def disable_auto_maintenance():
 
 def auto_maintenance_if_enabled():
     """
-    Check if the user enabled auto_maintenance.
-    If True, automatically clear cache and remove thumbnails on Kodi startup.
+    Called at Kodi startup (via service.py).
+    If auto_maintenance is True, we show a progress bar and clear cache + remove thumbnails.
     """
     if ADDON.getSettingBool("auto_maintenance"):
-        clear_cache(ask_confirmation=False)  # skip confirmation if auto-run
-        remove_thumbs(ask_confirmation=False)  # skip confirmation if auto-run
+        run_maintenance_with_progress()
+
+def run_maintenance_with_progress():
+    """
+    Clears cache and removes thumbnails while showing a background progress bar.
+    Once done, displays a 'Maintenance Completed' message.
+    """
+    dialog = xbmcgui.DialogProgressBG()
+    dialog.create("Auto Maintenance", "Starting maintenance...")
+
+    # We'll do two major steps: Clear Cache, Remove Thumbs.
+    # Let's keep track of total steps to show approximate progress.
+    total_steps = 2
+    current_step = 0
+
+    # 1) Clear cache
+    dialog.update(int((current_step / total_steps) * 100), "Clearing Cache...")
+    clear_cache(ask_confirmation=False)
+    current_step += 1
+
+    # 2) Remove thumbnails
+    dialog.update(int((current_step / total_steps) * 100), "Removing Thumbnails...")
+    remove_thumbs(ask_confirmation=False)
+    current_step += 1
+
+    # Final update to 100%
+    dialog.update(100, "Maintenance Completed")
+    dialog.close()
+
+    # Optionally show a final dialog box
+    xbmcgui.Dialog().notification("Maintenance Completed", "Cache and thumbnails cleared.", xbmcgui.NOTIFICATION_INFO, 4000)
 
 def clear_cache(ask_confirmation=True):
     dialog = xbmcgui.Dialog()
