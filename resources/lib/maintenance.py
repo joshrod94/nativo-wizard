@@ -46,9 +46,9 @@ def run_maintenance_with_progress():
     dialog = xbmcgui.DialogProgressBG()
     dialog.create("Auto Maintenance", "Starting maintenance...")
 
-    # We'll do two major steps: Clear Cache, Remove Thumbs.
+    # We'll do two major steps: Clear Cache, Remove Thumbs(disabled for now).
     # Let's keep track of total steps to show approximate progress.
-    total_steps = 2
+    total_steps = 1 # We're only clearing cache, so total steps is 1. Update to 2 when implementing thumbs.
     current_step = 0
 
     # 1) Clear cache
@@ -56,17 +56,19 @@ def run_maintenance_with_progress():
     clear_cache(ask_confirmation=False)
     current_step += 1
 
-    # 2) Remove thumbnails
+    '''# 2) Remove thumbnails
     dialog.update(int((current_step / total_steps) * 100), "Removing Thumbnails...")
-    remove_thumbs(ask_confirmation=False)
-    current_step += 1
+    remove_thumbs(ask_confirmation=False) # Commented out because we're not implementing remove_thumbs
+    current_step += 1'''
 
     # Final update to 100%
     dialog.update(100, "Maintenance Completed")
+    # Keep the dialog visible for ~4 seconds
+    time.sleep(4)
     dialog.close()
 
     # Optionally show a final dialog box
-    xbmcgui.Dialog().notification("Maintenance Completed", "Cache and thumbnails cleared.", xbmcgui.NOTIFICATION_INFO, 4000)
+    xbmcgui.Dialog().notification("Maintenance Completed", "Cache has been cleared.", xbmcgui.NOTIFICATION_INFO, 6000) # change text when implementing remove_thumbs
 
 def clear_cache(ask_confirmation=True):
     dialog = xbmcgui.Dialog()
@@ -94,7 +96,7 @@ def clear_cache(ask_confirmation=True):
         if ask_confirmation:
             dialog.ok("Cache Not Found", "No temp folder present.")
 
-def remove_thumbs(ask_confirmation=True):
+'''def remove_thumbs(ask_confirmation=True):
     dialog = xbmcgui.Dialog()
     if ask_confirmation:
         confirm = dialog.yesno("Remove Thumbnails", "This will remove all thumbnails. Continue?")
@@ -112,4 +114,4 @@ def remove_thumbs(ask_confirmation=True):
             dialog.ok("Error Removing Thumbnails", str(e))
     else:
         if ask_confirmation:
-            dialog.ok("No Thumbnails Folder", "Nothing to remove.")
+            dialog.ok("No Thumbnails Folder", "Nothing to remove.")'''
