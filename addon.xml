@@ -21,5 +21,8 @@
         <description>This wizard helps install and manage the Nativo build.</description>
         <disclaimer>Use at your own risk. This addon and build has only been tested on Kodi 21.2 "Omega".</disclaimer>
         <platform>all</platform>
-    </extension>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+   </extension>
 </addon>
