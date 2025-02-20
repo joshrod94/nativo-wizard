@@ -1,0 +1,17 @@
+<addon id="plugin.program.nativowizard"
+       name="Nativo Wizard"
+       version="1.0.0"
+       provider-name="Josh Rodriguez"
+       extension="python" 
+       library="default.py">
+    <requires>
+        <import addon="xbmc.python" version="3.13.0" />
+    </requires>
+
+    <extension point="xbmc.addon.metadata">
+        <summary>Nativo Wizard</summary>
+        <description>This wizard helps install and manage the Nativo build.</description>
+        <disclaimer>Use at your own risk. This addon and build has only been tested on Kodi 21.2 "Omega".</disclaimer>
+        <platform>all</platform>
+    </extension>
+</addon>
