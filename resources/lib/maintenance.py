@@ -7,7 +7,7 @@ import xbmcgui
 import xbmcplugin
 import xbmc
 
-ADDON = xbmcaddon.Addon(id='plugin.program.mywizard')
+ADDON = xbmcaddon.Addon(id='plugin.program.nativowizard')
 
 def open_maintenance_menu():
     """

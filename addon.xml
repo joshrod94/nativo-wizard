@@ -1,28 +1,35 @@
 <addon id="plugin.program.nativowizard"
        name="Nativo Wizard"
        version="1.0.0"
-       provider-name="Josh Rodriguez"
-       extension="python" 
-       library="default.py">
+       provider-name="Josh Rodriguez">
+
+    <!-- 
+      This import tells Kodi we need Python 3. 
+      Without it, Kodi may skip loading the add-on. 
+    -->
     <requires>
-        <import addon="xbmc.python" version="3.13.0" />
+        <import addon="xbmc.python" version="3.0.0" />
     </requires>
 
-    <extension point="xbmc.python" library="default.py">
-        <provides>program</provides>
-    </extension>
-
+    <!-- 
+      1) A service extension means Kodi will run default.py at startup. 
+      2) <provides>program</provides> means it also shows up in Program Add-ons. 
+    -->
     <extension point="xbmc.service" library="default.py">
         <provides>program</provides>
     </extension>
 
+    <!-- 
+      Add-on metadata. This is optional but recommended 
+      so Kodi knows your icon, fanart, summary, etc. 
+    -->
     <extension point="xbmc.addon.metadata">
         <summary>Nativo Wizard</summary>
         <description>This wizard helps install and manage the Nativo build.</description>
         <disclaimer>Use at your own risk. This addon and build has only been tested on Kodi 21.2 "Omega".</disclaimer>
-        <platform>all</platform>
         <assets>
             <icon>icon.png</icon>
         </assets>
-   </extension>
+        <platform>all</platform>
+    </extension>
 </addon>

@@ -13,7 +13,7 @@ from resources.lib.maintenance import (
     auto_maintenance_if_enabled
 )
 
-ADDON = xbmcaddon.Addon(id='plugin.program.mywizard')
+ADDON = xbmcaddon.Addon(id='plugin.program.nativowizard')
 
 def run_service_mode():
     """
