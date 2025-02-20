@@ -8,6 +8,14 @@
         <import addon="xbmc.python" version="3.13.0" />
     </requires>
 
+    <extension point="xbmc.python" library="default.py">
+        <provides>program</provides>
+    </extension>
+
+    <extension point="xbmc.service" library="default.py">
+        <provides>program</provides>
+    </extension>
+
     <extension point="xbmc.addon.metadata">
         <summary>Nativo Wizard</summary>
         <description>This wizard helps install and manage the Nativo build.</description>
