@@ -64,7 +64,9 @@ def run_maintenance_with_progress():
     current_step += 1'''
 
     # Final update to 100%
-    dialog.update(100, "Maintenance Completed")
+    dialog.update(100, "Auto Maintenance")
+    # Keep the dialog visible for ~4 seconds
+    xbmc.sleep(3000)
     dialog.close()
 
     # Optionally show a final dialog box
