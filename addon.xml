@@ -11,11 +11,18 @@
         <import addon="xbmc.python" version="3.0.0" />
     </requires>
 
-    <!-- 
-      1) A service extension means Kodi will run default.py at startup. 
-      2) <provides>program</provides> means it also shows up in Program Add-ons. 
+   <!-- 
+      (1) Service extension: runs service.py at Kodi startup, no UI/handle.
+          This is where we do auto-maintenance, so it can run in the background.
     -->
-    <extension point="xbmc.service" library="default.py">
+    <extension point="xbmc.service" library="service.py" />
+
+    <!-- 
+      (2) Script (or plugin) extension: runs default.py as a Program Add-on
+          so the user can see “Run” in Program Add-ons and manually open your wizard.
+          <provides>program</provides> ensures it appears in the “Programs” category.
+    -->
+    <extension point="xbmc.python.plugin" library="default.py">
         <provides>program</provides>
     </extension>
 
