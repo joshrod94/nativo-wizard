@@ -45,6 +45,8 @@ def run_maintenance_with_progress():
     """
     dialog = xbmcgui.DialogProgressBG()
     dialog.create("Auto Maintenance", "Starting maintenance...")
+    # Keep the dialog visible for ~4 seconds
+    xbmc.sleep(4000)
 
     # We'll do two major steps: Clear Cache, Remove Thumbs(disabled for now).
     # Let's keep track of total steps to show approximate progress.
@@ -63,8 +65,6 @@ def run_maintenance_with_progress():
 
     # Final update to 100%
     dialog.update(100, "Maintenance Completed")
-    # Keep the dialog visible for ~4 seconds
-    xbmc.sleep(4000)  # 4 seconds
     dialog.close()
 
     # Optionally show a final dialog box
