@@ -3,6 +3,7 @@
 import xbmc
 import xbmcaddon
 import xbmcgui
+import xbmcvfs # For Kodi 19+ compatibility
 import os
 import shutil
 
@@ -39,10 +40,6 @@ def auto_maintenance_if_enabled():
         remove_thumbs(ask_confirmation=False)  # skip confirmation if auto-run
 
 def clear_cache(ask_confirmation=True):
-    """
-    Manually clear Kodi's cache folder at special://temp/.
-    If ask_confirmation=False, it does so without prompting the user.
-    """
     dialog = xbmcgui.Dialog()
     if ask_confirmation:
         confirm = dialog.yesno("Clear Cache", "Remove temporary files now?")
@@ -50,7 +47,8 @@ def clear_cache(ask_confirmation=True):
             dialog.notification("Cache Not Cleared", "Operation cancelled.", xbmcgui.NOTIFICATION_INFO, 3000)
             return
 
-    temp_path = xbmc.translatePath("special://temp/")
+    # Use xbmcvfs.translatePath for Kodi 19+
+    temp_path = xbmcvfs.translatePath("special://temp/")
     if os.path.exists(temp_path):
         try:
             for item in os.listdir(temp_path):
@@ -68,10 +66,6 @@ def clear_cache(ask_confirmation=True):
             dialog.ok("Cache Not Found", "No temp folder present.")
 
 def remove_thumbs(ask_confirmation=True):
-    """
-    Manually remove the Thumbnails folder at special://profile/Thumbnails/.
-    If ask_confirmation=False, it does so without prompting the user.
-    """
     dialog = xbmcgui.Dialog()
     if ask_confirmation:
         confirm = dialog.yesno("Remove Thumbnails", "This will remove all thumbnails. Continue?")
@@ -79,7 +73,7 @@ def remove_thumbs(ask_confirmation=True):
             dialog.notification("Thumbnails Not Removed", "Operation cancelled.", xbmcgui.NOTIFICATION_INFO, 3000)
             return
 
-    thumbs_path = xbmc.translatePath("special://profile/Thumbnails/")
+    thumbs_path = xbmcvfs.translatePath("special://profile/Thumbnails/")
     if os.path.exists(thumbs_path):
         try:
             shutil.rmtree(thumbs_path, ignore_errors=True)
